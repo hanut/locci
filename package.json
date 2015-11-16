@@ -1,0 +1,27 @@
+{
+  "name": "locci",
+  "version": "1.0.0",
+  "description": "Simple loc counter for a project",
+  "main": "locci.js",
+  "scripts": {
+    "start": "nodejs locci.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hanut/locci.git"
+  },
+  "keywords": [
+    "locci",
+    "kloc"
+  ],
+  "author": "Hanut Singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hanut/locci/issues"
+  },
+  "homepage": "https://github.com/hanut/locci#readme",
+  "dependencies": {
+    "fs": "0.0.2"
+  }
+}
