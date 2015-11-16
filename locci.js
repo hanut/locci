@@ -16,3 +16,14 @@ var files = [];
 var fCount = 0;
 var lCount = 0;
 
+start();
+
+function start(customPath){
+  console.log("Started...");
+  var path = customPath || "./";
+  fs.readdirSync(path,function(err,files){
+    console.log("getting folders...");
+    console.log(err);
+    console.log(files);
+  });
+}
