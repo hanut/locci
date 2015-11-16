@@ -15,21 +15,19 @@ var args = process.argv;
 args.shift();args.shift();
 
 //Include dependencies and init variables
+var exec = require('child_process').exec;
 var glob = require('glob');
 var files = [];
 var ftypes = args[1] ? args[1].split(",") : ["php","js","py","jade","java","html"];
-var lCount = 0;
+var lCounts = [];
 var path = args[0] ? args[0]+"**/*." : "**/*.";
-
-// console.log(ftypes);
-// console.log(path);
 
 //Start the processing
 start();
 
 function start(){
   findFiles(ftypes);
-  console.log(files);
+  countLines();
 }
 
 function findFiles(ftypes){
@@ -42,7 +40,6 @@ function findFiles(ftypes){
         console.log("No ."+ftype[i]+" files found.");
         continue;
       }else{
-        console.log("Total File Count: "+files.length);
         files.push.apply(files, fileList);
       }
     }catch(e){
@@ -52,3 +49,28 @@ function findFiles(ftypes){
   }
 }
 
+function countLines(){
+  for(var i=0,len=files.length;i<len;i++){
+    exec("wc -l "+files[i], function(error, stdout, stderr) {
+      console.log();
+      lCounts.push(parseInt(stdout.split(" ")[0]));
+      if(lCounts.length === files.length){
+        onFinish();
+      }
+    });
+  }
+}
+
+function onFinish(){
+  var total = function(){
+    var tmp=0;
+    for(var i=0,len=lCounts.length;i<len;i++){
+      tmp += lCounts[i];
+    }
+    return tmp;
+  }();
+  console.log("---------------------------------");
+  console.log("Total File Count: "+files.length);
+  console.log("---------------------------------");
+  console.log("Total Lines Count: "+total);
+}
