@@ -10,20 +10,45 @@
 * @author Hanut Singh <hanut@koresoft.in>
 */
 
-//Include dependencies and init variables
-var fs = require('fs');
-var files = [];
-var fCount = 0;
-var lCount = 0;
+//Get runtime arguments
+var args = process.argv;
+args.shift();args.shift();
 
+//Include dependencies and init variables
+var glob = require('glob');
+var files = [];
+var ftypes = args[1] ? args[1].split(",") : ["php","js","py","jade","java","html"];
+var lCount = 0;
+var path = args[0] ? args[0]+"**/*." : "**/*.";
+
+// console.log(ftypes);
+// console.log(path);
+
+//Start the processing
 start();
 
-function start(customPath){
-  console.log("Started...");
-  var path = customPath || "./";
-  fs.readdirSync(path,function(err,files){
-    console.log("getting folders...");
-    console.log(err);
-    console.log(files);
-  });
+function start(){
+  findFiles(ftypes);
+  console.log(files);
 }
+
+function findFiles(ftypes){
+  for(var i=0,len=ftypes.length;i<len;i++){
+    try{
+      //Find all files of i-th file type
+      var fileList = glob.sync(path+ftypes[i]);
+
+      if(!fileList || typeof fileList === "undefined"){
+        console.log("No ."+ftype[i]+" files found.");
+        continue;
+      }else{
+        console.log("Total File Count: "+files.length);
+        files.push.apply(files, fileList);
+      }
+    }catch(e){
+      console.log("Invalid Path");
+      process.exit(0);
+    }
+  }
+}
+
